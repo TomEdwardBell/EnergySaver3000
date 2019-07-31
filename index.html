@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+    <style>
+      body{  
+      background-color: #DDDDDD;
+      font-family: Arial;
+      color: black;
+      }
+      
+      .timestamp{
+        font-size: 70px;
+        margin-bottom: -10px;
+        background-color: #999999;
+        color: white;
+        margin-top: 30px;
+      }
+      .infoscroll{
+        display: flex;
+        overflow-y: hidden;
+        white-space: nowrap;
+        overflow: auto;
+        background-color: #888888;
+        /* border-radius: 20px; */
+      }
+      .infoblock{
+          background-color: black;
+          color: white;
+          border-radius: 10px;
+          min-with: 400px;
+          margin: 20px;
+          padding: 10px;
+          display: inline-block;
+          flex-direction: column;
+      }
+      
+      .infoblock p{
+        display:inline;
+      }
+      
+      .main_title{
+        background-color: #222288;
+        color: white;
+        padding: 20px;
+      }
+      
+      .main_title h1{
+        font-size: 100px;
+        margin-top: -10px;
+      }
+      
+      .main_title p{
+        margin-top: -50px;
+        font-size; 30px;
+      }
+      
+      .home_info {
+        background-color: #4444AA;
+        color: white;
+        padding: 20px;
+      }
+      
+    </style>
+  </head>
+  
+  <body>
+       <div class="main_title">
+         <h1> EnergySaver3000 </h1>
+         <p> The best way to save energy </p>      
+      </div>
+     <div class="home_info">Information for ECS electronics lab</div>
+
+    </div>
+    
+    <div class="timestamp">Now</div>
+    <div class="infoscroll">
+      <div class="infoblock">
+        <h1> Time </h1>
+        <p id="time_now">None</p>
+      </div>
+      
+      <div class="infoblock">
+        <h1> Temperature </h1>
+        <p id="temp_now">None</p> <p>*c</p>
+      </div>      
+      <div class="infoblock">
+        <h1>Light Level</h1>
+        <p id="lighttime_now">None</p>
+      </div>
+        <div class="infoblock"> <h1>Speaker Time</h1>
+          <p> On for </p> <p id="speakertime_now">None</p>
+      </div>
+      </div>
+    <div class=timestamp>1 Min Ago</div>
+      
+     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase.js"></script> 
+      
+      
+  <script>
+  var config = {
+    apiKey: "AlzaSyD3UtehTQhHvZ07_v7nmXHzPXWEJgw0-Bw",
+    authDomain: "microbit-smart-home.firebaseapp.com",
+    databaseURL: "https://microbit-smart-home.firebaseio.com",
+    storageBucket: "bucket.appspot.com"
+  }
+  console.log('Hi')
+  firebase.initializeApp(config);
+
+  // Get a reference to the database service
+  var database = firebase.database();
+  
+  function update_db(){
+        var time_now;
+        var temp_now;
+        var lighttime_now;
+        var speakertime_now;
+    
+        firebase.database().ref('/current/').once('value').then(function(snapshot){
+          time_now = (snapshot.val().time);
+          document.getElementById("time_now").innerHTML = time_now;
+          
+          temp_now = (snapshot.val().temp);
+          document.getElementById("temp_now").innerHTML = temp_now;
+          
+          lighttime_now = (snapshot.val().light);
+          document.getElementById("lighttime_now").innerHTML = lighttime_now;
+          
+          speakertime_now = (snapshot.val().speakertime);
+          document.getElementById("speakertime_now").innerHTML = speakertime_now;
+          
+          
+  
+        })
+        setTimeout(update_db, 3000);
+      }
+  update_db();
+    </script>  
+  </body>
+</html>
