@@ -73,26 +73,46 @@
 
     </div>
     
-    <div class="timestamp">Now</div>
+    <div class="timestamp">Raw Information</div>
     <div class="infoscroll">
       <div class="infoblock">
-        <h1> Time </h1>
-        <p id="time_now">None</p>
+        <h1> Time of update </h1>
+        <p id="current_time">None</p>
       </div>
       
       <div class="infoblock">
         <h1> Temperature </h1>
-        <p id="temp_now">None</p> <p>*c</p>
+        <p id="temp">None</p> <p>*c</p>
       </div>      
       <div class="infoblock">
-        <h1>Light Level</h1>
-        <p id="lighttime_now">None</p>
+        <h1>Light Time</h1>
+        <p>On for </p> <p id="lighttime">None</p> <p>Minutes</p>
       </div>
         <div class="infoblock"> <h1>Speaker Time</h1>
-          <p> On for </p> <p id="speakertime_now">None</p>
+          <p> On for </p> <p id="speakertime">None</p> <p>Minutes</p>
       </div>
-      </div>
-    <div class=timestamp>1 Min Ago</div>
+  </div>
+    <div class="timestamp">Stats</div>
+      <div class"infoscroll"> 
+        <div class="infoblock">
+          <h1>Energy Used By Light</h1>
+          <p id="light_used">None</p> <p>kWh</p>
+        </div>
+        <div class="infoblock">
+          <h1>Energy Used By Speaker</h1>
+          <p id="speaker_used">None</p> <p>kWh</p>
+        </div>
+        
+        <div class="infoblock">
+          <h1> Total Energy Used </h1>
+          <p id="total_used">None</p> <p>kWh</p>
+        </div>
+        
+        <div class="infoblock">
+          <h1> Cost </h1>
+          <p>$</p><p id="cost"> None</p>
+    </div>
+      
       
      <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
@@ -115,23 +135,44 @@
   var database = firebase.database();
   
   function update_db(){
-        var time_now;
-        var temp_now;
-        var lighttime_now;
-        var speakertime_now;
+        var current_time;
+        var temp;
+        var lighttime;
+        var speakertime;
+        var cost;
+        var light_used;
+        var speaker_used;
+        var total_used;
     
         firebase.database().ref('/current/').once('value').then(function(snapshot){
-          time_now = (snapshot.val().time);
-          document.getElementById("time_now").innerHTML = time_now;
+          current_time = (snapshot.val().time);
+          document.getElementById("current_time").innerHTML = current_time;
           
-          temp_now = (snapshot.val().temp);
-          document.getElementById("temp_now").innerHTML = temp_now;
+          temp = (snapshot.val().temp);
+          document.getElementById("temp").innerHTML = temp;
           
-          lighttime_now = (snapshot.val().light);
-          document.getElementById("lighttime_now").innerHTML = lighttime_now;
+          lighttime = (snapshot.val().light);
+          document.getElementById("lighttime").innerHTML = lighttime;
           
-          speakertime_now = (snapshot.val().speakertime);
-          document.getElementById("speakertime_now").innerHTML = speakertime_now;
+          speakertime = (snapshot.val().speakertime);
+          document.getElementById("speakertime").innerHTML = speakertime;
+          
+          light_used = 3.6*lighttime;
+          // 60 watt bulb
+          document.getElementById("light_used").innerHTML = light_used;
+          
+          speaker_used = 6*speakertime;
+          // 100 watt speaker
+          document.getElementById("speaker_used").innerHTML = Math.round(speaker_used);
+          
+          total_used = light_used + speaker_used;
+          document.getElementById("total_used").innerHTML = Math.round(total_used);
+          
+          cost = Math.round(13*total_used)/100
+          // 13p per kWh
+          document.getElementById("cost").innerHTML = cost;
+          
+          
           
           
   
