@@ -11,8 +11,9 @@
       
       .timestamp{
         font-size: 70px;
-        margin-bottom: -10px;
-        background-color: #999999;
+        margin-bottom: 0px;
+        padding-left: 20px;
+        background-color: #555555;
         color: white;
         margin-top: 30px;
       }
@@ -85,15 +86,15 @@
         <p id="temp">None</p> <p>*c</p>
       </div>      
       <div class="infoblock">
-        <h1>Light Time</h1>
+        <h1>Lights</h1>
         <p>On for </p> <p id="lighttime">None</p> <p>Minutes</p>
       </div>
-        <div class="infoblock"> <h1>Speaker Time</h1>
+        <div class="infoblock"> <h1>Speakers</h1>
           <p> On for </p> <p id="speakertime">None</p> <p>Minutes</p>
       </div>
   </div>
     <div class="timestamp">Stats</div>
-      <div class"infoscroll"> 
+   <div class="infoscroll"> 
         <div class="infoblock">
           <h1>Energy Used By Light</h1>
           <p id="light_used">None</p> <p>kWh</p>
@@ -110,8 +111,16 @@
         
         <div class="infoblock">
           <h1> Cost </h1>
-          <p>$</p><p id="cost"> None</p>
+          <p>£</p><p id="cost"> None</p>
+     </div>
+          
+        <div class="infoblock">
+          <h1> Amount of  CO2 released</h1>
+          <p id="co2">None</p> <p>Kg</p>
     </div>
+  </div>
+ 
+  
       
       
      <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
@@ -143,6 +152,7 @@
         var light_used;
         var speaker_used;
         var total_used;
+        var co2;
     
         firebase.database().ref('/current/').once('value').then(function(snapshot){
           current_time = (snapshot.val().time);
@@ -171,13 +181,13 @@
           cost = Math.round(13*total_used)/100
           // 13p per kWh
           document.getElementById("cost").innerHTML = cost;
-          
-          
-          
-          
+   
+          co2 = Math.round(10*0.596*total_used)/10;
+          // 0.596 Kg of CO2 per kWh
+          document.getElementById("co2").innerHTML = co2;
   
         })
-        setTimeout(update_db, 3000);
+        setTimeout(update_db, 6000);
       }
   update_db();
     </script>  
